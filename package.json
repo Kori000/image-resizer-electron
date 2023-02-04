@@ -5,13 +5,44 @@
   "main": "main.js",
   "scripts": {
     "dev": "export NODE_ENV=development&&npx electronmon .",
-    "start": "export NODE_ENV=production&&npx electronmon ."
+    "start": "export NODE_ENV=production&&npx electronmon .",
+    "pack": "electron-builder --mac --win",
+    "mac": "electron-builder --mac",
+    "win": "electron-builder --win"
+  },
+  "build": {
+    "appId": "com.your-app-id",
+    "productName": "Resizer",
+    "directories": {
+      "output": "dist"
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "icon": "assets/icons/Icon_512x512.png"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    }
   },
   "author": "Shane Kori",
   "license": "MIT",
   "dependencies": {
-    "electron": "^22.2.0",
+    "electron-squirrel-startup": "^1.0.0",
     "resize-img": "^2.0.0",
     "toastify-js": "^1.12.0"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.4",
+    "@electron-forge/maker-deb": "^6.0.4",
+    "@electron-forge/maker-rpm": "^6.0.4",
+    "@electron-forge/maker-squirrel": "^6.0.4",
+    "@electron-forge/maker-zip": "^6.0.4",
+    "electron": "^22.2.0",
+    "electron-builder": "^23.6.0"
   }
 }

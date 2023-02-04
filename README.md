@@ -19,6 +19,18 @@ App to resize images dimensions
   ```bash
     npm run start
   ```
+  + build Mac
+  ```bash
+    npm run mac
+  ```
+  + build Windows
+  ```bash
+    npm run win
+  ```
+  + build Mac & Windows
+  ```bash
+    npm run pack
+  ```
  
 ## License
 

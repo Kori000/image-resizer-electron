@@ -21,7 +21,8 @@ function createMainWindow(params) {
       nodeIntegration: true,
       contexteIsolation: false,
       preload: path.join(__dirname, './preload.js')
-    }
+    },
+    icon: path.join(__dirname, './assets/icons/Icon_32x32.png')
   })
 
   // open dev tools if in dev mode
