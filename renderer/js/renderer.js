@@ -7,6 +7,8 @@ const widthInput = document.querySelector('#width')
 
 // get the image
 function loadImage(e) {
+  console.log(e)
+
   const file = e.target.files[0]
   if (file['type'] === 'image/gif')
     return alertWarning('GIF images are not supported')
@@ -22,10 +24,12 @@ function loadImage(e) {
     widthInput.value = e.target.width
     heightInput.value = e.target.height
   }
+  alertSuccess('Image loaded successfully')
 
   form.style.display = 'block'
   filename.innerHTML = file.name
-  outputPath.innerHTML = path.join(os.homedir(), 'imageresizer')
+  const currentFolder = path.dirname(img.files[0].path)
+  outputPath.innerHTML = path.join(currentFolder, 'imageresizer')
 }
 
 // Send image to main process

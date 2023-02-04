@@ -5,7 +5,7 @@ const resizeImg = require('resize-img')
 
 const { app, BrowserWindow, Menu, ipcMain, shell } = require('electron')
 console.log(process.env.NODE_ENV)
-const isDev = process.env.NODE_ENV !== 'development'
+const isDev = process.env.NODE_ENV === 'development'
 const isMac = process.platform === 'darwin'
 
 let mainWindow
@@ -15,8 +15,8 @@ function createMainWindow(params) {
   mainWindow = new BrowserWindow({
     title: 'Image Resizer',
     devTools: true,
-    width: isDev ? 1300 : 1500,
-    height: isDev ? 800 : 1000,
+    width: isDev ? 1500 : 1300,
+    height: isDev ? 1000 : 800,
     webPreferences: {
       nodeIntegration: true,
       contexteIsolation: false,
@@ -96,26 +96,41 @@ const menu = [
 
 // Respond to ipcRenderer resize
 ipcMain.on('image:resize', (e, options) => {
-  options.dest = path.join(os.homedir(), 'imageresizer')
+  const currentFolder = path.dirname(options.imgPath)
+  options.dest = path.join(currentFolder, 'imageresizer')
+
   resizeImage(options)
 })
 
 async function resizeImage({ imgPath, width, height, dest }) {
   try {
-    const newPath = await resizeImg(fs.readFileSync(imgPath), {
+    const newImage = await resizeImg(fs.readFileSync(imgPath), {
       width: +width,
       height: +height
     })
     // Create filename
     const filename = path.basename(imgPath)
-
     // Create dest folder if no exist
     if (!fs.existsSync(dest)) {
       fs.mkdirSync(dest)
     }
 
+    // verify if file exist
+    let currentImgPath = path.join(dest, filename)
+    let idx = 0
+    const originalFileName = currentImgPath.split('.')[0]
+    const ext = currentImgPath.split('.')[1]
+    while (fs.existsSync(currentImgPath)) {
+      const pathFirst = currentImgPath.split('.')[0]
+      idx++
+      currentImgPath = currentImgPath.replace(
+        pathFirst,
+        `${originalFileName} (${idx})`
+      )
+    }
+
     // Write file to dest folder
-    fs.writeFileSync(path.join(dest, filename), newPath)
+    fs.writeFileSync(currentImgPath, newImage)
 
     // Send sucess to render
     mainWindow.webContents.send('image:done')
