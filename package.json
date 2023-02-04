@@ -4,7 +4,8 @@
   "description": "App to resize images dimensions",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "dev": "export NODE_ENV=development&&electron .",
+    "start": "export NODE_ENV=production&&electron ."
   },
   "author": "Shane Kori",
   "license": "MIT",
